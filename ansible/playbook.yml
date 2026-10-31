@@ -1,0 +1,44 @@
+- name: Automatización de entorno Docker y GoAccess
+  hosts: lab_systems
+  become: yes
+  tasks:
+    - name: Actualizar repositorios e instalar Docker
+      apt:
+        name: 
+          - docker.io
+          - docker-compose-v2
+        state: present
+        update_cache: yes
+
+    - name: Crear directorio de despliegue
+      file:
+        path: /opt/tp4_deploy
+        state: directory
+        mode: '0755'
+
+    - name: Copiar archivos base de Docker y GoAccess
+      copy:
+        src: "../docker/{{ item }}"
+        dest: "/opt/tp4_deploy/{{ item }}"
+      loop:
+        - docker-compose.yml
+        - Dockerfile
+        - goaccess.conf
+
+    - name: Copiar configuracion de Nginx y vigilar cambios
+      copy:
+        src: ../docker/nginx.conf
+        dest: /opt/tp4_deploy/nginx.conf
+      notify: Reiniciar Nginx
+
+    - name: Levantar los contenedores con Docker Compose
+      command: docker compose up -d --build
+      args:
+        chdir: /opt/tp4_deploy
+
+    - name: Ajustar permisos de volumenes compartidos para GoAccess
+      command: docker exec web_server chmod -R 777 /var/log/nginx /usr/share/nginx/html
+
+  handlers:
+    - name: Reiniciar Nginx
+      command: docker restart web_server

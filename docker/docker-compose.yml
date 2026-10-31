@@ -1,0 +1,27 @@
+services:
+  web_server:
+    image: nginx:alpine
+    container_name: web_server
+    ports:
+      - "8032:80"
+    volumes:
+      - logs_compartidos:/var/log/nginx
+      - reporte_compartido:/usr/share/nginx/html
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    restart: always
+
+  log_analyzer:
+    build: .
+    container_name: log_analyzer
+    ports:
+      - "9032:7890"
+    depends_on:
+      - web_server
+    volumes:
+      - logs_compartidos:/srv/logs
+      - reporte_compartido:/srv/report
+    restart: always
+
+volumes:
+  logs_compartidos:
+  reporte_compartido:
