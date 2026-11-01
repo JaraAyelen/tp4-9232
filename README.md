@@ -1,8 +1,11 @@
 # Trabajo Práctico N° 4 - Automatización Avanzada (Contenedores, Ansible y CI/CD)
 
 **Carrera:** Tecnicatura Universitaria en Administración de Sistemas y Software Libre
+
 **Asignatura:** Automatización y Scripting
+
 **Alumna:** Ayelen Jara
+
 **Legajo N°:** 9232
 
 ## Descripción
@@ -20,7 +23,7 @@ La orquestación de la infraestructura y el levantamiento de los servicios se au
 
 ![Ejecución del comando ansible-playbook](capturas/captura_playbook.png)
 
-## Monitoreo de Servicios (GoAccess)
+### Monitoreo de Servicios (GoAccess)
 Como resultado del despliegue, el contenedor dedicado a GoAccess procesa exitosamente las métricas de tráfico generadas por Nginx. El servicio lee los registros en tiempo real y expone la información analizada a través de un dashboard HTML interactivo servido en el puerto definido.
 
 ![Dashboard visual de GoAccess](capturas/captura_dashboard.png)
